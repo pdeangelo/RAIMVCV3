@@ -1,0 +1,214 @@
+﻿@model List<RAIMVCV3.Models.Loan>
+@{
+    ViewBag.Title = "Loans";
+}
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Error"]
+    </div>
+}
+<div class="row">
+    <div class="form-group col-lg-2">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </div>
+    <div class="form-group col-lg-1 col-lg-offset-9">
+        <a href="@Url.Action("Add", "Home")"
+           class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-plus"></span> Add Loan
+        </a>
+    </div>
+
+</div>
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    <div class="row">
+        <div class="form-group col-lg-2">
+            @Html.Label("Status", new { @class = "control-label" })
+            @Html.DropDownList("StatusSelectListItems", (SelectList)ViewBag.StatusSelectListItems, "-- Select --", new { id = "ddlStatus", @class = "form-control" })
+        </div>
+        <div class="form-group col-lg-2">
+            @Html.Label("Entities", new { @class = "control-label" })
+            @Html.DropDownList("EntitiesSelectListItems", (SelectList)ViewBag.EntitiesSelectListItems, "-- Select --", new { id = "ddlEntities", @class = "form-control" })
+
+        </div>
+        <div class="form-group col-lg-2">
+            @Html.Label("Clients", new { @class = "control-label" })
+            @Html.DropDownList("ClientsSelectListItems", (SelectList)ViewBag.ClientsSelectListItems, "-- Select --", new { id = "ddlClients", @class = "form-control" })
+        </div>
+        <div class="form-group col-lg-2">
+
+            <label>
+                Show Completed?
+                @Html.CheckBox("chkShowCompleted", new { id = "ckShowCompleted", @class = "form-control" })
+            </label>
+        </div>
+        <div class="form-group col-lg-1">
+            @Html.Label("Search Text", new { @class = "control-label" })
+            @Html.TextBox("SearchText", null, new { @class = "form-control" })
+
+        </div>
+        <div class="form-group col-lg-1 col-lg-offset-1">
+            @Html.Label("")
+            <input class="btn btn-lg btn-success" name="submitButton" type="submit" value="Search" />
+            @*<a class="btn btn-lg btn-primary" href="@Url.Action("Index","Home")">Search</a>*@
+        </div>
+
+
+        @*<div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-lg btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Letters
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="baileeReport()">Bailee</a></li>
+                        <li><a onclick="advanceReport()">Advance</a></li>
+                        <li><a onclick="releaseReport()">Release</a></li>
+                        <li><a onclick="remittanceReport()">Remittance</a></li>
+                    </ul>
+                    <button class="btn btn-lg btn-success" onclick="baileeReport()">Run</button>
+                </div>
+            </div>*@
+    </div>
+    <p>
+
+        <button class="btn btn-lg btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Letters
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <button class="btn btn-lg btn-success" onclick="baileeReport()">Bailee</button>
+            <button class="btn btn-lg btn-success" onclick="advanceReport()">Advance</button>
+            <button class="btn btn-lg btn-success" onclick="releaseReport()">Release</button>
+            <button class="btn btn-lg btn-success" onclick="remittanceReport()">Remittance</button>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <table class="table table-striped tableFixHead" id="LoanTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Funding Date</th>
+                    <th>Escrow Date</th>
+                    <th>Investor Proceeds Date</th>
+                    <th>Loan Number</th>
+                    <th width="150px">Status</th>
+                    <th width="150px">Client</th>
+                    <th width="150px">Mortgagee</th>
+                    <th width="150px">Entity</th>
+                    <th width="150px">Property Address</th>
+                    <th>Mortgage Amount</th>
+                    <th>Interest Rate</th>
+                    <th>Investor Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            @for (int index = 0; index < Model.Count; index++)
+            {
+                <tr>
+                    <td>
+                        @Html.CheckBox("chkSelected", new { id = "chkSelected", @class = "form-check-input" })
+                        @Html.Hidden("LoanID", @Model[index].LoanID)
+                    </td>
+                    <td>@String.Format("{0:MM/dd/yyyy}", @Model[index].LoanFundingDate)</td>
+                    <td>@String.Format("{0:MM/dd/yyyy}", @Model[index].DateDepositedInEscrow)</td>
+                    <td>@String.Format("{0:MM/dd/yyyy}", @Model[index].InvestorProceedsDate)</td>
+                    <td>@Model[index].LoanNumber</td>
+                    <td>@Model[index].LoanStatus.LoanStatusName</td>
+                    <td>@Model[index].Client.ClientName</td>
+                    <td>@Model[index].LoanMortgagee</td>
+                    <td>@Model[index].Entity.EntityName</td>
+                    <td>@Model[index].LoanPropertyAddress</td>
+                    <td>@String.Format("{0:N}", @Model[index].LoanMortgageAmount)</td>
+                    <td>@String.Format("{0:P}", @Model[index].LoanInterestRate)</td>
+                    <td>@Model[index].Investor.InvestorName</td>
+                    <td>
+                        <div class="pull-right">
+                            <a href="@Url.Action("Edit", new { id = @Model[index].LoanID })" class="btn btn-warning btn-sm margin-right">
+                                <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> </span>
+                            </a>
+                            <a href="@Url.Action("Delete", new { id = @Model[index].LoanID })" class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> </span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<script type="text/javascript">
+    function baileeReport() {
+        var table = document.getElementById("#LoanTable");
+        var loanIDs = "";
+        var table = $("#LoanTable");
+
+        for (let row of LoanTable.rows) {
+            if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+                loanIDs += row.cells[0].childNodes[4].value + ",";
+        }
+        $.post("/Home/RunBaileeLetter/", { loanlist: loanIDs }, function (r) {
+
+        });
+    }
+    function advanceReport() {
+        var table = document.getElementById("#LoanTable");
+        var loanIDs = "";
+        var table = $("#LoanTable");
+
+        for (let row of LoanTable.rows) {
+            if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+                loanIDs += row.cells[0].childNodes[4].value;
+        }
+        $.post("/Home/AdvanceReport/", { loanlist: loanIDs }, function (r) {
+
+        });
+        
+    }
+    function remittanceReport() {
+        var table = document.getElementById("#LoanTable");
+        var loanIDs = "";
+        var table = $("#LoanTable");
+
+        for (let row of LoanTable.rows) {
+            if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+                loanIDs += row.cells[0].childNodes[4].value;
+        }
+        $.post("/Home/RemittanceReport/", { loanlist: loanIDs }, function (r) {
+
+        });
+       
+    }
+    function releaseReport() {
+        var table = document.getElementById("#LoanTable");
+        var loanIDs = "";
+        var table = $("#LoanTable");
+
+        for (let row of LoanTable.rows) {
+            if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+                loanIDs += row.cells[0].childNodes[4].value;
+        }
+        $.post("/Home/ReleaseReport/", { loanlist: loanIDs }, function (r) {
+
+        });
+       
+    }
+</script>
+

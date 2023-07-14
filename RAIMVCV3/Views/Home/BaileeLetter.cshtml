@@ -1,0 +1,124 @@
+﻿@model List<RAIMVCV3.Models.LoanForLetters>
+@{
+    ViewBag.Title = "Bailee Letter";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+@TempData["Message"]
+@*<a href="@Url.Action("RunBaileeLetter", new { loans = Model })" class="btn btn-danger btn-sm">*@
+@using (Html.BeginForm("BaileeLetter", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        @*<li><a onclick="baileeReport()">Bailee</a></li>*@
+        <a href="@Url.Action("RunBaileeLetter", new { loans = Model })">
+            <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> </span>
+        </a>
+        <button onclick="salesReport()">Run</button>
+    </div>
+    <div class="col-lg-12">
+        <table class="table table-striped tableFixHead" id="LoanTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Funding Date</th>
+                    <th>Escrow Date</th>
+                    <th>Investor Proceeds Date</th>
+                    <th>Loan Number</th>
+                    <th width="150px">Status</th>
+                    <th width="150px">Client</th>
+                    <th width="150px">Mortgagee</th>
+                    <th width="150px">Entity</th>
+                    <th width="150px">Property Address</th>
+                    <th>Mortgage Amount</th>
+                    <th>Interest Rate</th>
+                    <th>Investor Name</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            @for (int index = 0; index < Model.Count; index++)
+            {
+                <tr>
+                    <td>
+                        @Html.CheckBox("chkSelected", Model[index].IsChecked, new { id = "chkSelected", @class = "form-check-input" })
+                        @Html.Hidden("LoanID", @Model[index].LoanID)
+                    </td>
+                    @*<td>@String.Format("{0:MM/dd/yyyy}", @Model[index].LoanFundingDate)</td>
+                        <td>@String.Format("{0:MM/dd/yyyy}", @Model[index].DateDepositedInEscrow)</td>
+                        <td>@String.Format("{0:MM/dd/yyyy}", @Model[index].InvestorProceedsDate)</td>*@
+                    <td>@Model[index].LoanNumber</td>
+                    @*<td>@Model[index].LoanStatus.LoanStatusName</td>
+                        <td>@Model[index].Client.ClientName</td>
+                        <td>@Model[index].LoanMortgagee</td>
+                        <td>@Model[index].Entity.EntityName</td>
+                        <td>@Model[index].LoanPropertyAddress</td>
+                        <td>@String.Format("{0:N}", @Model[index].LoanMortgageAmount)</td>
+                        <td>@String.Format("{0:P}", @Model[index].LoanInterestRate)</td>
+                        <td>@Model[index].Investor.InvestorName</td>*@
+                    <td></td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+<script type="text/javascript">
+        function download() {
+        var obj= @Html.Raw(Json.Encode(Model));
+       $.ajax({
+           url: '@Url.Content("/Home/RunBaileeLetter")',
+           dataType: 'json',
+           type: 'POST',
+           data: JSON.stringify(obj),
+           contentType: 'application/json',
+           success: function (data) {
+               alert("success");
+           }
+       });
+   }
+        function salesReport() {
+            var table = document.getElementById("#LoanTable");
+            var loanIDs = "";
+            var table = $("#LoanTable");
+
+            for (let row of LoanTable.rows) {
+                if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+                    loanIDs += row.cells[0].childNodes[4].value;
+            }
+            $.post("/Home/RunBaileeLetter/", { loanlist: loanIDs }, function (r) {
+
+            });
+        }
+        function baileeReport() {
+        var table = document.getElementById("#LoanTable");
+        var loanIDs = "";
+        var table = $("#LoanTable");
+
+        for (let row of LoanTable.rows) {
+            if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
+            loanIDs += row.cells[0].childNodes[4].value;
+        }
+
+        $.ajax({
+            url: '/Home/RunBaileeLetter',
+            type: 'POST',
+            contentType: 'application/json;',
+            data: JSON.stringify({loanlist: loanIDs }),
+            success: function (valid) {
+                if (valid) {
+            //show that id is valid
+        } else {
+            //show that id is not valid
+        }
+            }
+    });
+    }
+</script>
+

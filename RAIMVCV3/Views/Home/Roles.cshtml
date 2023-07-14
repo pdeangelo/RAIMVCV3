@@ -1,0 +1,61 @@
+﻿@model List<RAIMVCV3.Models.Role>
+@{
+    ViewBag.Title = "Roles";
+}
+
+
+<div class="row">
+    <div class="form-group col-lg-2">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </div>
+    <div class="form-group col-lg-1 col-lg-offset-9">
+        <a href="@Url.Action("AddRole", "Home")"
+           class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-plus"></span> Add Role
+        </a>
+    </div>
+</div>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+
+@using (Html.BeginForm("RoleEdit", "Home", FormMethod.Post))
+{
+    <div style="overflow-x: auto;" class="col-lg-12">
+        <table class="table table-striped tableFixHead" id="ClientTable">
+            <thead class="thead-dark">
+                <tr class="d-flex">
+                    <th>Role Name</th>
+                    <th class="col-lg-3">&nbsp;</th>
+                </tr>
+            </thead>
+            @for (int index = 0; index < Model.Count; index++)
+            {
+                <tr>
+                    <td>@Model[index].RoleName</td>
+
+                    <td>
+                        <div class="pull-right">
+                            <a href="@Url.Action("EditRole", new { id = @Model[index].RoleID })" class="btn btn-warning btn-sm margin-right">
+                                <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> </span>
+                            </a>
+                            <a href="@Url.Action("DeleteRole", new { id = @Model[index].RoleID })" class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> </span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+

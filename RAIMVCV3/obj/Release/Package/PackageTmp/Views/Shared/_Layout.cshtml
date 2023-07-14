@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Table Funding Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="../Content/logoForApplicationnobackgroundgrey.png" /></a>
+                @*@Html.ActionLink("Table Funding Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li style="font-size:25px">@Html.ActionLink("Loans", "Index", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("TrackingReport", "Home")">Tracking</a></li>
+                            <li><a href="@Url.Action("AgingReport", "Home")">Aging</a></li>
+                            <li><a href="@Url.Action("CollectionReport", "Home")">Collections</a></li>
+                            <li><a href="@Url.Action("SalesReport", "Home")">Sales</a></li>
+                            <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Clients", "Home")">Clients</a></li>
+                            <li><a href="@Url.Action("Investors", "Home")">Investors</a></li>
+                            <li><a href="@Url.Action("Entities", "Home")">Entities</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="@Url.Action("Index", "Account")">Users</a></li>
+                            <li><a href="@Url.Action("Index", "Role")">Roles</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content col-lg-12">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Table Funding Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

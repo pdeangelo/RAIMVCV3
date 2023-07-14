@@ -1,0 +1,23 @@
+﻿@model RAIMVCV3.Models.Loan
+    @{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewBag.Title = "Loans";
+        ViewBag.ShowBackbar = true;
+    }
+
+    <h2>@Model.LoanNumber</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                <h5><label>Loan ID:</label> <input type="text" value="@Model.LoanID" /></h5>
+                <h5><label>Loan Name:</label> <input type="text" value="@Model.LoanNumber" /></h5>
+                <h5><label>Loan Funding Date:</label> <input type="text" value="@Model.LoanFundingDate" /></h5>
+                <h5><label>Loan Mortgage Amount:</label> <input type="text" value="@Model.LoanMortgageAmount" /></h5>
+
+            </div>
+            
+        </div>
+        
+    </div>
+

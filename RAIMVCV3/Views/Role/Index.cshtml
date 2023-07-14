@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Roles</h2>
+
+@Html.ActionLink("Create New Role", "Create") | @Html.ActionLink("Manage User Role", "ManageUserRoles")
+<hr />
+
+<div class="col-lg-12">
+    <table class="table table-striped tableFixHead" id="LoanTable">
+        <thead class="thead-dark">
+            <tr class="d-flex">
+                <th>Role Name</th>
+            </tr>
+        </thead>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    <div class="pull-right">
+                        <a href="@Url.Action("Edit", new { id = @role.Name })" class="btn btn-warning btn-sm margin-right">
+                            <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> </span>
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = @role.Name })" class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> </span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@*<div>
+    @foreach (var role in Model)
+    {
+        <p>
+            <strong>@role.Name | </strong>
+            <span onclick="return confirm('Are you sure to delete?')"><a href="/Role/Delete?RoleName=@role.Name" class="delLink" style="color:red;">Delete</a></span> |
+            @Html.ActionLink("Edit", "Edit", new { roleName = @role.Name })
+        </p>
+    }
+</div>*@

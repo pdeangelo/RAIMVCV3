@@ -1,0 +1,22 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "User Roles";
+}
+
+<h2>User Roles Listing </h2>
+
+<hr />
+<div>
+    @if (ViewBag.RolesForThisUser != null)
+    {
+        <div>
+            <h3>Roles for this user </h3>
+            <ol>
+                @foreach (string s in ViewBag.RolesForThisUser)
+                {
+                    <li>@s</li>
+                }
+            </ol>
+        </div>
+    }
+</div>

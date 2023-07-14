@@ -1,0 +1,97 @@
+﻿@model RAIMVCV3.Models.Client
+@using RAIMVCV3
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+<div class="row">
+
+    <div class="col-md-6 col-lg-offset-3">
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.ClientID)
+            @Html.HiddenFor(m => m.ClientID)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ClientName, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.ClientName, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.AdvanceRate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.AdvanceRate, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MinimumInterest, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.MinimumInterest, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.OriginationDiscount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.OriginationDiscount, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.OriginationDiscount2, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.OriginationDiscount2, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.OriginationDiscountNumDays, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.OriginationDiscountNumDays, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.OriginationDiscountNumDays2, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.OriginationDiscountNumDays2, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("InterestBasedOnAdvance", Model.InterestBasedOnAdvance) @Html.DisplayNameFor(m => m.InterestBasedOnAdvance)
+                </label>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("OriginationBasedOnAdvance", Model.OriginationBasedOnAdvance) @Html.DisplayNameFor(m => m.OriginationBasedOnAdvance)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("NoInterest", Model.NoInterest) @Html.DisplayNameFor(m => m.NoInterest)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ClientPrimeRate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.ClientPrimeRate, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ClientPrimeRateSpread, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.ClientPrimeRateSpread, new { @class = "form-control" })
+        </div>
+
+        <div class="col-md-12">
+            <div class="pad-top">
+                <button type="submit" class="btn btn-success btn-lg margin-right">
+                    <span class="glyphicon glyphicon-save"></span> Save
+                </button>
+                <a href="@Url.Action("Clients")" class="btn btn-warning btn-lg">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+}
+

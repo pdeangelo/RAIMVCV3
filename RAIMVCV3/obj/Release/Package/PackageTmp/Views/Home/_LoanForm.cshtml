@@ -1,0 +1,256 @@
+﻿@model RAIMVCV3.Models.Loan
+@using RAIMVCV3
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+<div class="row">
+
+    <div class="col-md-6 col-lg-offset-3">
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.LoanID)
+            @Html.HiddenFor(m => m.LoanStatusID)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanFundingDate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanFundingDate, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ClientID, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.ClientID, (SelectList)ViewBag.ClientsSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanNumber, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanNumber, "{0:n}", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanMortgagee, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanMortgagee, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanMortgageeBusiness, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanMortgageeBusiness, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanTypeID, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.LoanTypeID, (SelectList)ViewBag.LoanTypeSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EntityID, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.EntityID, (SelectList)ViewBag.EntitiesSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanPropertyAddress, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanPropertyAddress, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.StateID, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.StateID, (SelectList)ViewBag.StatesSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUW10031008LoanApplication", Model.LoanUW10031008LoanApplication) @Html.DisplayNameFor(m => m.LoanUW10031008LoanApplication)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWAllongePromissoryNote", Model.LoanUWAllongePromissoryNote) @Html.DisplayNameFor(m => m.LoanUWAllongePromissoryNote)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWAppraisal", Model.LoanUWAppraisal) @Html.DisplayNameFor(m => m.LoanUWAppraisal)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanUWAppraisalAmount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanUWAppraisalAmount, "{0:0}", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWAssignmentOfMortgage", Model.LoanUWAssignmentOfMortgage) @Html.DisplayNameFor(m => m.LoanUWAssignmentOfMortgage)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWBackgroundCheck", Model.LoanUWBackgroundCheck) @Html.DisplayNameFor(m => m.LoanUWBackgroundCheck)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWCertofGoodStandingFormation", Model.LoanUWCertofGoodStandingFormation) @Html.DisplayNameFor(m => m.LoanUWCertofGoodStandingFormation)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWClosingProtectionLetter", Model.LoanUWClosingProtectionLetter) @Html.DisplayNameFor(m => m.LoanUWClosingProtectionLetter)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWCommitteeReview", Model.LoanUWCommitteeReview) @Html.DisplayNameFor(m => m.LoanUWCommitteeReview)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWCreditReport", Model.LoanUWCreditReport) @Html.DisplayNameFor(m => m.LoanUWCreditReport)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWHUD1SettlementStatement", Model.LoanUWHUD1SettlementStatement) @Html.DisplayNameFor(m => m.LoanUWHUD1SettlementStatement)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWHomeownersInsurance", Model.LoanUWHomeownersInsurance) @Html.DisplayNameFor(m => m.LoanUWHomeownersInsurance)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWLoanPackage", Model.LoanUWLoanPackage) @Html.DisplayNameFor(m => m.LoanUWLoanPackage)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWTitleCommitment", Model.LoanUWTitleCommitment) @Html.DisplayNameFor(m => m.LoanUWTitleCommitment)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWClaytonReportApprovalEmail", Model.LoanUWClaytonReportApprovalEmail) @Html.DisplayNameFor(m => m.LoanUWClaytonReportApprovalEmail)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanInterestRate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanInterestRate, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanMortgageAmount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanMortgageAmount, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanAdvanceRate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanAdvanceRate,  new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LoanUWZillowSqFt, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.LoanUWZillowSqFt,  new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.InvestorID, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.InvestorID, (SelectList)ViewBag.InvestorsSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBox("LoanUWIsComplete", Model.LoanUWIsComplete) @Html.DisplayNameFor(m => m.LoanUWIsComplete)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("CompletedBy", new { @class = "control-label" })
+            @Html.DropDownList("CompletedBy", (SelectList)ViewBag.UsersSelectListItems, "--Select--", new { @class = "form-control" })
+        </div>
+        @*End Underwriting*@
+        @*Accounting*@
+        <div class="form-group">
+            @Html.LabelFor(m => m.DateDepositedInEscrow, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DateDepositedInEscrow, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BaileeLetterDate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.BaileeLetterDate, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DateDepositedInEscrow, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.DateDepositedInEscrow, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.InvestorProceedsDate, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.InvestorProceedsDate, "{0:d}", new { @class = "form-control datepicker" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.InvestorProceeds, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.InvestorProceeds, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.InterestFee, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.InterestFee, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustSvcInterestDiscount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.CustSvcInterestDiscount,  new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.UnderwritingFee, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.UnderwritingFee,  new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustSvcUnderwritingDiscount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.CustSvcUnderwritingDiscount,  new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.OriginationFee, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.OriginationFee, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustSvcOriginationDiscount, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.CustSvcOriginationDiscount, new { @class = "form-control" })
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(m => m.tot, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.CustSvcOriginationDiscount, "{0:N}", new { @class = "form-control datepicker" })
+        </div>*@
+
+
+        <div class="col-md-12">
+            <div class="pad-top">
+                <button type="submit" class="btn btn-success btn-lg margin-right">
+                    <span class="glyphicon glyphicon-save"></span> Save
+                </button>
+                <a href="@Url.Action("Index")" class="btn btn-warning btn-lg">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+}
+

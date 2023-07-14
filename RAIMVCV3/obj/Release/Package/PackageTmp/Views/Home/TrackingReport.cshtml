@@ -1,0 +1,51 @@
+﻿@model RAIMVCV3.Models.FromToDate
+@{
+    ViewBag.Title = "Tracking Report";
+}
+
+<h2>@ViewBag.Title</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+
+@using (Html.BeginForm("TrackingReport", "Home", FormMethod.Post))
+{
+    <div class="container">
+        <div id="wrapper" class="clearfix">
+            <div class="well">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="FDate">From Date</label>
+                            <input type="date" ng-model="FDate" id="FDate" name="FDate" class="form-control" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label for="lblTDate">To Date</label>
+                            <input type="date" ng-model="TDate" id="TDate" name="TDate" class="form-control" required />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <p><button class="btn btn-lg btn-success" onclick="salesReport()">Go</button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    function salesReport() {
+        var fd = document.getElementById("FDate");
+        var td = document.getElementById("TDate");
+        $.post("/Home/RunTrackingReport/", { dtFromDate: fd.value, dtToDate: td.value }, function (r) {
+
+        });
+    }
+</script>
+

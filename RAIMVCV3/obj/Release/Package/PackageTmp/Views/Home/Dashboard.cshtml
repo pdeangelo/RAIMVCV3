@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Dashboard Report";
+}
+<h2>@ViewBag.Title</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+<iframe title="RAIGroup" width="1500" height="700" src="https://app.powerbi.com/view?r=eyJrIjoiZmU4MDdjZjUtOTFmZC00ZDU2LTgxYWMtMTk1NTBhZDQ1MjMxIiwidCI6IjcyOWQxY2U4LTUxN2EtNGJjYi1iY2JlLTgzYThmNzJkYzMzMSIsImMiOjF9" frameborder="0" allowFullScreen="true"></iframe>
+
+

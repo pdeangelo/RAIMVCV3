@@ -1,0 +1,48 @@
+﻿@model RAIMVCV3.Models.Entity
+@using RAIMVCV3
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
+<div class="row">
+
+    <div class="col-md-6 col-lg-offset-3">
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.EntityID)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EntityName, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.EntityName, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.EntityBank, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.EntityBank, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ABA, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.ABA, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Account, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.Account, new { @class = "form-control" })
+        </div>
+       
+
+        <div class="col-md-12">
+            <div class="pad-top">
+                <button type="submit" class="btn btn-success btn-lg margin-right">
+                    <span class="glyphicon glyphicon-save"></span> Save
+                </button>
+                <a href="@Url.Action("Entities")" class="btn btn-warning btn-lg">
+                    <span class="glyphicon glyphicon-remove"></span> Cancel
+                </a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+}
+

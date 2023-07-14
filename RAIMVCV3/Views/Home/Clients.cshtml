@@ -1,0 +1,80 @@
+﻿@model List<RAIMVCV3.Models.Client>
+@{
+    ViewBag.Title = "Clients";
+}
+
+<div class="row">
+    <div class="form-group col-lg-2">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </div>
+    <div class="form-group col-lg-1 col-lg-offset-9">
+        <a href="@Url.Action("AddClient", "Home")"
+           class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-plus"></span> Add Client
+        </a>
+    </div>
+</div>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Message"]
+    </div>
+}
+
+@using (Html.BeginForm("ClientEdit", "Home", FormMethod.Post))
+{
+    <div style="overflow-x: auto;" class="col-lg-12">
+        <table class="table table-striped" id="ClientTable">
+            <tr class="d-flex">
+                <th>Client Name</th>
+                <th>Advance Rate</th>
+                <th>Minimum Interest</th>
+                <th>Origination Discount</th>
+                <th>Origination Discount 2</th>
+                <th>Origination Discount Num Days</th>
+                <th>Origination Discount Num Days 2</th>
+                <th>Interest Based On Advance</th>
+                <th>Origination Based On Advance</th>
+                <th>No Interest</th>
+                <th>Prime Rate</th>
+                <th>Prime Rate Spread</th>
+                <th class="col-lg-3">&nbsp;</th>
+            </tr>
+            @for (int index = 0; index < Model.Count; index++)
+            {
+                <tr>
+                    <td>@Model[index].ClientName</td>
+                    <td>@String.Format("{0:P}", @Model[index].AdvanceRate)</td>
+                    <td>@String.Format("{0:N}", @Model[index].MinimumInterest)</td>
+                    <td>@String.Format("{0:P}", Model[index].OriginationDiscount)</td>
+                    <td>@String.Format("{0:P}", Model[index].OriginationDiscount2)</td>
+                    <td>@String.Format("{0:P}", Model[index].OriginationDiscountNumDays)</td>
+                    <td>@String.Format("{0:P}", Model[index].OriginationDiscountNumDays2)</td>
+                    <td>@String.Format("{0:P}", Model[index].InterestBasedOnAdvance)</td>
+                    <td>@String.Format("{0:P}", Model[index].OriginationBasedOnAdvance)</td>
+                    <td>@Model[index].NoInterest</td>
+                    <td>@String.Format("{0:P}", @Model[index].ClientPrimeRate)</td>
+                    <td>@String.Format("{0:P}", @Model[index].ClientPrimeRateSpread)</td>
+
+                    <td>
+                        <div class="pull-right">
+                            <a href="@Url.Action("EditClient", new { id = @Model[index].ClientID })" class="btn btn-warning btn-sm margin-right">
+                                <span class="glyphicon glyphicon-edit"></span><span class="hidden-xs"> </span>
+                            </a>
+                            <a href="@Url.Action("DeleteClient", new { id = @Model[index].ClientID })" class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-trash"></span><span class="hidden-xs"> </span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+}
+

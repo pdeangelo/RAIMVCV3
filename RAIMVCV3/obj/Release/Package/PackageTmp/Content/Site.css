@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 30px;
     padding-bottom: 20px;
 }
 
@@ -24,10 +24,10 @@ textarea {
 }
 .tableFixHead {
     overflow: auto;
-    height: 200px;
+    max-height: 100px;
 }
 
-    .tableFixHead thead th {
+    .tableFixHead th {
         position: sticky;
         top: 0;
         z-index: 1;
@@ -35,8 +35,21 @@ textarea {
         color: black;
     }
 thead th {
-    Height: 120px;
+    Height: 100px;
 }
+table {
+    text-align: left;
+    position: relative;
+}
+/*th:not([scope=row]) {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}*/
+/*table tr th.sticky-top {
+    top: 70px;
+}*/
 .navbar-header {
     min-height: 100px;
 }

@@ -9,7 +9,7 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img src="../Content/logoForApplicationnobackgroundgrey.png" /></a>
+                <a class="navbar-brand" href="#"><img src="~/Content/logoForApplicationnobackgroundgrey.png" /></a>
                 @*@Html.ActionLink("Table Funding Application", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
@@ -27,6 +27,16 @@
                         <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("TrackingReport", "Home")">Tracking</a></li>
+                            <li><a href="@Url.Action("AgingReport", "Home")">Aging</a></li>
+                            <li><a href="@Url.Action("CollectionReport", "Home")">Collections</a></li>
+                            <li><a href="@Url.Action("SalesReport", "Home")">Sales</a></li>
+                            <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Letters <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("BaileeLetter", "Home")">Bailee</a></li>
                             <li><a href="@Url.Action("AgingReport", "Home")">Aging</a></li>
                             <li><a href="@Url.Action("CollectionReport", "Home")">Collections</a></li>
                             <li><a href="@Url.Action("SalesReport", "Home")">Sales</a></li>

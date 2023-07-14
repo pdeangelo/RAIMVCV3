@@ -2,20 +2,6 @@
 @{
     ViewBag.Title = "Loans";
 }
-    <div class="row">
-        <div class="form-group col-lg-2">
-            <h2>
-                @ViewBag.Title    
-            </h2>
-        </div>
-        <div class="form-group col-lg-1 col-lg-offset-9">
-            <a href="@Url.Action("Add", "Home")" 
-               class="btn btn-primary btn-lg">
-                <span class="glyphicon glyphicon-plus"></span> Add Loan
-            </a>
-        </div>
-    </div>
-
 @if (TempData["Message"] != null)
 {
     <div class="alert alert-success alert-dismissible" role="alert">
@@ -24,7 +10,31 @@
         </button>
         @TempData["Message"]
     </div>
+}@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @TempData["Error"]
+    </div>
 }
+<div class="row">
+    <div class="form-group col-lg-2">
+        <h2>
+            @ViewBag.Title
+        </h2>
+    </div>
+    <div class="form-group col-lg-1 col-lg-offset-9">
+        <a href="@Url.Action("Add", "Home")"
+           class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-plus"></span> Add Loan
+        </a>
+    </div>
+
+</div>
+
+
 @using (Html.BeginForm("Index", "Home", FormMethod.Post))
 {
     <div class="row">
@@ -58,42 +68,56 @@
             <input class="btn btn-lg btn-success" name="submitButton" type="submit" value="Search" />
             @*<a class="btn btn-lg btn-primary" href="@Url.Action("Index","Home")">Search</a>*@
         </div>
-        <div class="btn-group" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-lg btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Letters
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a onclick="baileeReport()">Bailee</a></li>
-                    <li><a onclick="advanceReport()">Advance</a></li>
-                    <li><a onclick="releaseReport()">Release</a></li>
-                    <li><a onclick="remittanceReport()">Remittance</a></li>
-                </ul>
-            </div>
+
+
+        @*<div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-lg btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Letters
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="baileeReport()">Bailee</a></li>
+                        <li><a onclick="advanceReport()">Advance</a></li>
+                        <li><a onclick="releaseReport()">Release</a></li>
+                        <li><a onclick="remittanceReport()">Remittance</a></li>
+                    </ul>
+                    <button class="btn btn-lg btn-success" onclick="baileeReport()">Run</button>
+                </div>
+            </div>*@
+    </div>
+    <p>
+
+        <button class="btn btn-lg btn-success" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Letters
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <button class="btn btn-lg btn-success" onclick="baileeReport()">Bailee</button>
+            <button class="btn btn-lg btn-success" onclick="advanceReport()">Advance</button>
+            <button class="btn btn-lg btn-success" onclick="releaseReport()">Release</button>
+            <button class="btn btn-lg btn-success" onclick="remittanceReport()">Remittance</button>
         </div>
     </div>
-
-
     <div class="col-lg-12">
         <table class="table table-striped tableFixHead" id="LoanTable">
             <thead class="thead-dark">
-                <tr class="d-flex">
-                    <th> </th>
-                    @*<th>Loan ID</th>*@
+                <tr>
+                    <th>&nbsp;</th>
                     <th>Funding Date</th>
                     <th>Escrow Date</th>
                     <th>Investor Proceeds Date</th>
-                    <th class="col-lg-1">Loan Number</th>
-                    <th class="col-lg-1">Status</th>
-                    <th class="col-lg-1">Client</th>
-                    <th class="col-lg-2">Mortgagee</th>
-                    <th class="col-lg-2">Entity</th>
-                    <th class="col-lg-4">Property Address</th>
+                    <th>Loan Number</th>
+                    <th width="150px">Status</th>
+                    <th width="150px">Client</th>
+                    <th width="150px">Mortgagee</th>
+                    <th width="150px">Entity</th>
+                    <th width="150px">Property Address</th>
                     <th>Mortgage Amount</th>
                     <th>Interest Rate</th>
                     <th>Investor Name</th>
-                    <th class="col-lg-3">&nbsp;</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             @for (int index = 0; index < Model.Count; index++)
@@ -138,21 +162,10 @@
 
         for (let row of LoanTable.rows) {
             if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
-                loanIDs += row.cells[0].childNodes[4].value;
+                loanIDs += row.cells[0].childNodes[4].value + ",";
         }
+        $.post("/Home/RunBaileeLetter/", { loanlist: loanIDs }, function (r) {
 
-        $.ajax({
-            url: '/Home/BaileeReport',
-            type: 'POST',
-            contentType: 'application/json;',
-            data: JSON.stringify({ loanlist: loanIDs }),
-            success: function (valid) {
-                if (valid) {
-                    //show that id is valid
-                } else {
-                    //show that id is not valid
-                }
-            }
         });
     }
     function advanceReport() {
@@ -164,20 +177,10 @@
             if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
                 loanIDs += row.cells[0].childNodes[4].value;
         }
+        $.post("/Home/AdvanceReport/", { loanlist: loanIDs }, function (r) {
 
-        $.ajax({
-            url: '/Home/AdvanceReport',
-            type: 'POST',
-            contentType: 'application/json;',
-            data: JSON.stringify({ loanlist: loanIDs }),
-            success: function (valid) {
-                if (valid) {
-                    //show that id is valid
-                } else {
-                    //show that id is not valid
-                }
-            }
         });
+        
     }
     function remittanceReport() {
         var table = document.getElementById("#LoanTable");
@@ -188,20 +191,10 @@
             if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
                 loanIDs += row.cells[0].childNodes[4].value;
         }
+        $.post("/Home/RemittanceReport/", { loanlist: loanIDs }, function (r) {
 
-        $.ajax({
-            url: '/Home/RemittanceReport',
-            type: 'POST',
-            contentType: 'application/json;',
-            data: JSON.stringify({ loanlist: loanIDs }),
-            success: function (valid) {
-                if (valid) {
-                    //show that id is valid
-                } else {
-                    //show that id is not valid
-                }
-            }
         });
+       
     }
     function releaseReport() {
         var table = document.getElementById("#LoanTable");
@@ -212,20 +205,10 @@
             if (row.cells[0].childElementCount > 0 && row.cells[0].childNodes[1].checked)
                 loanIDs += row.cells[0].childNodes[4].value;
         }
+        $.post("/Home/ReleaseReport/", { loanlist: loanIDs }, function (r) {
 
-        $.ajax({
-            url: '/Home/ReleaseReport',
-            type: 'POST',
-            contentType: 'application/json;',
-            data: JSON.stringify({ loanlist: loanIDs }),
-            success: function (valid) {
-                if (valid) {
-                    //show that id is valid
-                } else {
-                    //show that id is not valid
-                }
-            }
         });
+       
     }
 </script>
 

@@ -1538,13 +1538,12 @@ namespace RAIMVCV3.Controllers
             return View("");
         }
         [HttpPost]
-        public JsonResult RunAgingReport(DateTime dtFromDate, DateTime dtToDate)
+        public JsonResult RunAgingReport(DateTime dtFromDate)
         {
             try
             {
 
                 DateTime fromDate = new DateTime();
-                DateTime toDate = new DateTime();
 
                 if (dtFromDate < new DateTime(2000, 1, 1))
                 {
@@ -1553,15 +1552,8 @@ namespace RAIMVCV3.Controllers
                 }
                 else
                     fromDate = dtFromDate;
-                if (dtToDate < new DateTime(2000, 1, 1))
-                {
-                    TempData["Error"] = "Please enter a valid date";
-                    return Json("");
-                }
-                else
-                    toDate = dtToDate;
+               
                 fromDate = dtFromDate;
-                toDate = dtToDate;
                 var rptData = _loanRepository.GetLoans().Where(x => x.InvestorProceedsDate >= fromDate
                 && !x.LoanStatus.LoanStatusName.Contains("Cancel")
                 && !x.LoanStatus.LoanStatusName.Contains("Postpon"));

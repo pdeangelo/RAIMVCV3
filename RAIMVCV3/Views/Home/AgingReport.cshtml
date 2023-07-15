@@ -43,8 +43,7 @@
 <script type="text/javascript">
     function salesReport() {
         var fd = document.getElementById("FDate");
-        var td = document.getElementById("TDate");
-        $.post("/Home/RunAgingReport/", { dtFromDate: fd.value, dtToDate: td.value }, function (r) {
+        $.post("/Home/RunAgingReport/", { dtFromDate: fd.value}, function (r) {
 
         });
     }

@@ -229,7 +229,7 @@ namespace RAIMVCV3.Models
         public double DaysOutstandingClosed
         {
             get {
-                if (InvestorProceedsDate == null)
+                if (InvestorProceedsDate == null || DateDepositedInEscrow == null)
                     return 0;
                 else
                     return (double)DateDepositedInEscrow.Value.Subtract(InvestorProceedsDate.Value).TotalDays;

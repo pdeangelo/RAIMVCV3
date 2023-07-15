@@ -10,6 +10,7 @@ using Spire.Doc;
 using System.Net;
 using System.Linq;
 using System.Data.Entity;
+using System.Diagnostics;
 
 namespace RAIMVCV3.Controllers
 {
@@ -1537,7 +1538,7 @@ namespace RAIMVCV3.Controllers
             return View("");
         }
         [HttpPost]
-        public JsonResult RunAgingReport(DateTime? dtFromDate, DateTime? dtToDate)
+        public JsonResult RunAgingReport(DateTime dtFromDate, DateTime dtToDate)
         {
             try
             {
@@ -1545,24 +1546,25 @@ namespace RAIMVCV3.Controllers
                 DateTime fromDate = new DateTime();
                 DateTime toDate = new DateTime();
 
-                //if (!dtFromDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    fromDate = dtFromDate.SelectedDate.Value;
-                //if (!dtToDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    toDate = dtToDate.SelectedDate.Value;
-                //fromDate = dtFromDate.Value;
-                //toDate = dtToDate.Value;
-                var rptData = _loanRepository.GetLoans();
-
+                if (dtFromDate < new DateTime(2000, 1, 1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    fromDate = dtFromDate;
+                if (dtToDate < new DateTime(2000, 1, 1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    toDate = dtToDate;
+                fromDate = dtFromDate;
+                toDate = dtToDate;
+                var rptData = _loanRepository.GetLoans().Where(x => x.InvestorProceedsDate >= fromDate
+                && !x.LoanStatus.LoanStatusName.Contains("Cancel")
+                && !x.LoanStatus.LoanStatusName.Contains("Postpon"));
 
                 string client = "";
                 string entity = "";
@@ -1704,41 +1706,22 @@ namespace RAIMVCV3.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLabel.Content = ex.Message;
-                //ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                TempData["Error"] = "Aging Report Error";
+                return Json("");
             }
 
             System.Diagnostics.Process.Start("C:\\Users\\pdean\\Reports\\AgingReport.xlsx");
             return Json("");
         }
         [HttpPost]
-        public JsonResult RunTrackingReport(DateTime? dtFromDate, DateTime? dtToDate)
+        public JsonResult RunTrackingReport()
         {
             try
             {
-
-                DateTime fromDate = new DateTime();
-                DateTime toDate = new DateTime();
-
-                //if (!dtFromDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    fromDate = dtFromDate.SelectedDate.Value;
-                //if (!dtToDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    toDate = dtToDate.SelectedDate.Value;
-                //fromDate = dtFromDate.Value;
-                //toDate = dtToDate.Value;
-                var rptData = _loanRepository.GetLoans();
-
-
+                
+                var rptData = _loanRepository.GetLoans().Where(x => !x.LoanStatus.LoanStatusName.Contains("Cancel")
+                && !x.LoanStatus.LoanStatusName.Contains("Postpon"));
+                
                 using (var workbook = new XLWorkbook())
                 {
                     //    ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Aging Report");
@@ -1861,41 +1844,60 @@ namespace RAIMVCV3.Controllers
                         ws.Cell(row, 1).Value = loan.Client.ClientName;
                         ws.Cell(row, 2).Value = loan.LoanNumber;
                         ws.Cell(row, 3).Value = loan.LoanMortgagee;
-                        ws.Cell(row, 4).Value = loan.LoanMortgageAmount.Value;
-                        ws.Cell(row, 5).Value = loan.LoanAdvanceRate.Value;
+                        ws.Cell(row, 4).Value = loan.LoanMortgageAmount == null ? 0 : loan.LoanMortgageAmount.Value;
+                        ws.Cell(row, 5).Value = loan.LoanAdvanceRate == null ? 0 : loan.LoanAdvanceRate.Value;
                         ws.Cell(row, 6).Value = loan.LoanPropertyAddress;
-                        ws.Cell(row, 7).Value = loan.LoanAdvanceAmount.Value;
+                        ws.Cell(row, 7).Value = loan.LoanAdvanceAmount == null ? 0 : loan.LoanAdvanceAmount.Value;
                         ws.Cell(row, 8).Value = loan.WireFee;
                         ws.Cell(row, 9).Value = loan.AdvanceWithWireFee;
-                        ws.Cell(row, 10).Value = loan.DateDepositedInEscrow.Value;
-                        ws.Cell(row, 11).Value = loan.LoanInterestRate.Value;
-                        ws.Cell(row, 12).Value = loan.UnderwritingFee.Value;
-                        ws.Cell(row, 13).Value = loan.MinimumInterest.Value;
-                        ws.Cell(row, 14).Value = loan.GreaterofMinandCouponInterest;
-                        ws.Cell(row, 15).Value = loan.DailyInterestRate.Value;
-                        ws.Cell(row, 16).Value = loan.OriginationFee.Value;
-                        ws.Cell(row, 17).Value = loan.InvestorProceedsDate.Value;
-                        ws.Cell(row, 18).Value = loan.InvestorProceeds.Value;
 
+                        if (loan.DateDepositedInEscrow == null)
+                            ws.Cell(row, 10).Value = String.Empty;
+                        else
+                            ws.Cell(row, 10).Value = loan.DateDepositedInEscrow;
+
+                        ws.Cell(row, 11).Value = loan.LoanInterestRate == null ? 0 : loan.LoanInterestRate.Value;
+                        ws.Cell(row, 12).Value = loan.UnderwritingFee == null ? 0 : loan.UnderwritingFee.Value;
+                        ws.Cell(row, 13).Value = loan.MinimumInterest == null ? 0 : loan.MinimumInterest.Value;
+                        ws.Cell(row, 14).Value = loan.GreaterofMinandCouponInterest;
+                        ws.Cell(row, 15).Value = loan.DailyInterestRate == null ? 0 : loan.DailyInterestRate.Value;
+
+
+                        ws.Cell(row, 16).Value = loan.OriginationFee == null ? 0 : loan.OriginationFee.Value;
+
+                        if (loan.InvestorProceedsDate == null)
+                            ws.Cell(row, 17).Value = String.Empty;
+                        else
+                            ws.Cell(row, 17).Value = loan.InvestorProceedsDate;
+                        ws.Cell(row, 18).Value = loan.InvestorProceeds == null ? 0 : loan.InvestorProceeds.Value;
+                        Console.WriteLine(loan.LoanID);
                         ws.Cell(row, 19).Value = loan.DaysOutstandingClosed;
-                        ws.Cell(row, 20).Value = loan.InterestFee.Value;
-                        ws.Cell(row, 21).Value = loan.OriginationFee.Value;
-                        ws.Cell(row, 22).Value = loan.UnderwritingFee.Value;
-                        ws.Cell(row, 23).Value = loan.TotalFees.Value;
-                        ws.Cell(row, 24).Value = loan.MortgageOriginatorProceeds.Value;
-                        ws.Cell(row, 25).Value = loan.OpenMortgageBalance.Value;
-                        ws.Cell(row, 26).Value = loan.OpenAdvanceBalance.Value;
+                        ws.Cell(row, 20).Value = loan.InterestFee == null ? 0 : loan.InterestFee.Value;
+
+
+
+                        ws.Cell(row, 21).Value = loan.OriginationFee == null ? 0 : loan.OriginationFee.Value;
+                        ws.Cell(row, 22).Value = loan.UnderwritingFee == null ? 0 : loan.UnderwritingFee.Value;
+                        ws.Cell(row, 23).Value = loan.TotalFees == null ? 0 : loan.TotalFees.Value;
+                        ws.Cell(row, 24).Value = loan.MortgageOriginatorProceeds == null ? 0 : loan.MortgageOriginatorProceeds.Value;
+                        ws.Cell(row, 25).Value = loan.OpenMortgageBalance == null ? 0 : loan.OpenMortgageBalance.Value;
+                        ws.Cell(row, 26).Value = loan.OpenAdvanceBalance == null ? 0 : loan.OpenAdvanceBalance.Value;
                         ws.Cell(row, 27).Value = loan.DaysOutstandingPending;
                         ws.Cell(row, 28).Value = loan.AnnualizedYield;
-                        ws.Cell(row, 29).Value = loan.Entity.EntityName;
+                        ws.Cell(row, 29).Value = loan.Entity == null ? String.Empty : loan.Entity.EntityName;
                         ws.Cell(row, 30).Value = "";
-                        ws.Cell(row, 31).Value = loan.Investor.InvestorName;
-                        ws.Cell(row, 32).Value = loan.LoanStatus.LoanStatusName;
+                        ws.Cell(row, 31).Value = loan.Investor == null ? String.Empty : loan.Investor.InvestorName;
+                        ws.Cell(row, 32).Value = loan.LoanStatus == null ? String.Empty : loan.LoanStatus.LoanStatusName;
                         ws.Cell(row, 33).Value = loan.AppraisalPcnt;
-                        ws.Cell(row, 34).Value = loan.LoanUWAppraisalAmount.Value;
-                        ws.Cell(row, 35).Value = loan.LoanFundingDate;
-                        ws.Cell(row, 36).Value = loan.State.State1;
-                        ws.Cell(row, 37).Value = loan.DwellingType.DwellingType1;
+                        ws.Cell(row, 34).Value = loan.LoanUWAppraisalAmount == null ? 0 : loan.LoanUWAppraisalAmount.Value;
+
+                        if (loan.LoanFundingDate == null)
+                            ws.Cell(row, 35).Value = String.Empty;
+                        else
+                            ws.Cell(row, 35).Value = loan.LoanFundingDate;
+
+                        ws.Cell(row, 36).Value = loan.State == null ? String.Empty : loan.State.State1;
+                        ws.Cell(row, 37).Value = loan.DwellingType == null ? String.Empty : loan.DwellingType.DwellingType1;
                         ws.Cell(row, 38).Value = loan.LoanType.LoanTypeName;
                         row++;
                     }
@@ -1948,15 +1950,18 @@ namespace RAIMVCV3.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLabel.Content = ex.Message;
-                //ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                var lineNumber = new System.Diagnostics.StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+
+                TempData["Error"] = "Tracking Report Error";
+                return Json("");
             }
 
+            TempData["Message"] = "Tracking Report Completed Successfully";
             System.Diagnostics.Process.Start("C:\\Users\\pdean\\Reports\\TrackingReport.xlsx");
             return Json("");
         }
         [HttpPost]
-        public JsonResult RunCollectionReport(DateTime? dtFromDate, DateTime? dtToDate)
+        public JsonResult RunCollectionReport(DateTime dtFromDate, DateTime dtToDate)
         {
             try
             {
@@ -1964,23 +1969,24 @@ namespace RAIMVCV3.Controllers
                 DateTime fromDate = new DateTime();
                 DateTime toDate = new DateTime();
 
-                //if (!dtFromDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    fromDate = dtFromDate.SelectedDate.Value;
-                //if (!dtToDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    toDate = dtToDate.SelectedDate.Value;
-                //fromDate = dtFromDate.Value;
-                //toDate = dtToDate.Value;
-                var rptData = _loanRepository.GetLoans();
+                if (dtFromDate < new DateTime(2000, 1, 1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    fromDate = dtFromDate;
+                if (dtToDate < new DateTime(2000, 1, 1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    toDate = dtToDate;
+                fromDate = dtFromDate;
+                toDate = dtToDate;
+                var rptData = _loanRepository.GetLoans().Where(x => x.InvestorProceedsDate >= fromDate && x.DateDepositedInEscrow <= toDate);
+                
 
                 using (var workbook = new XLWorkbook())
                 {
@@ -2135,14 +2141,16 @@ namespace RAIMVCV3.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLabel.Content = ex.Message;
-                //ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                TempData["Error"] = "Collection Report Error";
+                return Json("");
+
             }
+            TempData["Message"] = "Collection Report Completed Successfully";
             System.Diagnostics.Process.Start("C:\\Users\\pdean\\Reports\\CollectionReport.xlsx");
             return Json("");
         }
         [HttpPost]
-        public JsonResult RunSalesReport(DateTime? dtFromDate, DateTime? dtToDate)
+        public JsonResult RunSalesReport(DateTime dtFromDate, DateTime dtToDate)
         {
             try
             {
@@ -2150,23 +2158,23 @@ namespace RAIMVCV3.Controllers
                 DateTime fromDate = new DateTime();
                 DateTime toDate = new DateTime();
 
-                //if (!dtFromDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    fromDate = dtFromDate.SelectedDate.Value;
-                //if (!dtToDate.SelectedDate.HasValue)
-                //{
-                //    ErrorLabel.Content = "Please enter a valid date";
-                //    return;
-                //}
-                //else
-                //    toDate = dtToDate.SelectedDate.Value;
-                //fromDate = dtFromDate.Value;
-                //toDate = dtToDate.Value;
-                var rptData = _loanRepository.GetLoans();
+                if (dtFromDate < new DateTime(2000,1,1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    fromDate = dtFromDate;
+                if (dtToDate < new DateTime(2000, 1, 1))
+                {
+                    TempData["Error"] = "Please enter a valid date";
+                    return Json("");
+                }
+                else
+                    toDate = dtToDate;
+                fromDate = dtFromDate;
+                toDate = dtToDate;
+                var rptData = _loanRepository.GetLoans().Where(x => x.DateDepositedInEscrow >= fromDate && x.DateDepositedInEscrow <= toDate);
 
                 using (var workbook = new XLWorkbook())
                 {
@@ -2258,9 +2266,17 @@ namespace RAIMVCV3.Controllers
                         ws.Cell(row, 4).Value = loan.LoanNumber;
                         ws.Cell(row, 5).Value = loan.LoanMortgagee;
                         ws.Cell(row, 6).Value = loan.LoanMortgageAmount;
-                        ws.Cell(row, 7).Value = loan.OpenAdvanceBalance;
-                        ws.Cell(row, 8).Value = loan.State.State1;
-                        ws.Cell(row, 9).Value = loan.DwellingType.DwellingType1;
+                        ws.Cell(row, 8).Value = loan.State.State1 == null ? String.Empty : loan.State.State1;
+                        if (loan.State == null)
+                            ws.Cell(row, 8).Value = String.Empty;
+                        else
+                            ws.Cell(row, 8).Value = loan.State.State1;
+
+                        if (loan.DwellingType == null)
+                            ws.Cell(row, 9).Value = String.Empty;
+                        else
+                            ws.Cell(row, 9).Value = loan.DwellingType.DwellingType1;
+
                         ws.Cell(row, 10).Value = loan.DateDepositedInEscrow;
                         ws.Cell(row, 11).Value = loan.LoanType.LoanTypeName;
                         ws.Cell(row, 12).Value = "";
@@ -2304,10 +2320,12 @@ namespace RAIMVCV3.Controllers
             }
             catch (Exception ex)
             {
-                //ErrorLabel.Content = ex.Message;
-                //ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                TempData["Error"] = "Sales Report Error";
+                return Json("");
+               
             }
 
+            TempData["Message"] = "Sales Report Completed Sucessfully";
             System.Diagnostics.Process.Start("C:\\Users\\pdean\\Reports\\SalesReport.xlsx");
             return Json("");
         }

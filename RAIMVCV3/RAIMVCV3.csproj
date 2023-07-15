@@ -209,6 +209,22 @@
     <Compile Include="Migrations\202307122035113_AddIsSelected.Designer.cs">
       <DependentUpon>202307122035113_AddIsSelected.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307151923175_InvestorproceedsDummyChange.cs" />
+    <Compile Include="Migrations\202307151923175_InvestorproceedsDummyChange.Designer.cs">
+      <DependentUpon>202307151923175_InvestorproceedsDummyChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307151926544_OtherDatesDummyChange.cs" />
+    <Compile Include="Migrations\202307151926544_OtherDatesDummyChange.Designer.cs">
+      <DependentUpon>202307151926544_OtherDatesDummyChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307151946400_InvestorProceedsDateChange.cs" />
+    <Compile Include="Migrations\202307151946400_InvestorProceedsDateChange.Designer.cs">
+      <DependentUpon>202307151946400_InvestorProceedsDateChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307152000432_OtherDateChange.cs" />
+    <Compile Include="Migrations\202307152000432_OtherDateChange.Designer.cs">
+      <DependentUpon>202307152000432_OtherDateChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Loan ForLetters.cs" />
     <Compile Include="Models\LoanList.cs" />
@@ -358,6 +374,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307122035113_AddIsSelected.resx">
       <DependentUpon>202307122035113_AddIsSelected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307151923175_InvestorproceedsDummyChange.resx">
+      <DependentUpon>202307151923175_InvestorproceedsDummyChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307151926544_OtherDatesDummyChange.resx">
+      <DependentUpon>202307151926544_OtherDatesDummyChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307151946400_InvestorProceedsDateChange.resx">
+      <DependentUpon>202307151946400_InvestorProceedsDateChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307152000432_OtherDateChange.resx">
+      <DependentUpon>202307152000432_OtherDateChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

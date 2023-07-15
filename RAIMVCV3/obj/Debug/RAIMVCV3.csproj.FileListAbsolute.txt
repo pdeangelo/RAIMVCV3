@@ -361,3 +361,7 @@ C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3
 C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.csproj.CopyComplete
 C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.dll
 C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.pdb
+C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.Migrations.InvestorproceedsDummyChange.resources
+C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.Migrations.OtherDatesDummyChange.resources
+C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.Migrations.InvestorProceedsDateChange.resources
+C:\Users\pdean\Documents\SourceCode\RAI_MVC\RAIMVCV3\RAIMVCV3\obj\Debug\RAIMVCV3.Migrations.OtherDateChange.resources

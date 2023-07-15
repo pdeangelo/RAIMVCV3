@@ -37,7 +37,9 @@ namespace RAIMVCV3.Models
 
         [DisplayName("Loan Number")]
         public string LoanNumber { get; set; }
-        [Column(TypeName = "date")]
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Funding Date")]
         public DateTime? LoanFundingDate { get; set; }
 
@@ -61,10 +63,13 @@ namespace RAIMVCV3.Models
         public double? LoanAdvanceRate { get; set; }
 
 
-        [Column(TypeName = "date")]
         [DisplayName("Entered Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? LoanEnteredDate { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Updated Date")]
         public DateTime? LoanUpdateDate { get; set; }
 
@@ -140,15 +145,18 @@ namespace RAIMVCV3.Models
 
         //end UW Fields
         //Fudning Fields 
-        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Date Deposited in Escrow")]
         public DateTime? DateDepositedInEscrow { get; set; }
 
-        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Bailee Letter Date")]
         public DateTime? BaileeLetterDate { get; set; }
 
-        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Investor Proceeds Date")]
         public DateTime? InvestorProceedsDate { get; set; }
 
@@ -156,8 +164,9 @@ namespace RAIMVCV3.Models
         [DefaultValue(0)]
         public double? InvestorProceeds { get; set; }
 
-        [Column(TypeName = "date")]
         [DisplayName("Closing Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ClosingDate { get; set; }
         //End funding fields
         //Fee Fields
@@ -263,6 +272,8 @@ namespace RAIMVCV3.Models
         {
             get
             {
+                if (InvestorProceeds == null)
+                    return 0;
                 if (InvestorProceeds == 0 && this.LoanStatus.LoanStatusName != "1 - Underwriting")
                     return LoanMortgageAmount;
                 else
@@ -375,6 +386,10 @@ namespace RAIMVCV3.Models
         {
             get
             { double interestIncome = 0;
+
+                if (DailyInterestRate == null || LoanAdvanceAmount == null || LoanMortgageAmount == null)
+                    return 0;
+
                 if (InterestBasedOnAdvance.Value)
                     interestIncome = DaysOutstandingClosed * DailyInterestRate.Value * LoanAdvanceAmount.Value;
                 else

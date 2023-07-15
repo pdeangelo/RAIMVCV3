@@ -58,21 +58,7 @@ namespace RAIMVCV3
                 if (loan.LoanPropertyAddress == null) loan.LoanPropertyAddress = String.Empty;
 
                 loan.LoanStatusID = 1;
-                
-                //Copy client fields used for calcs in case they change after the loans close and we want to calc the same fee
-                loan.ClientPrimeRate = loan.Client.ClientPrimeRate;
-                loan.ClientPrimeRateSpread = loan.Client.ClientPrimeRateSpread;
-                loan.OriginationDiscount = loan.Client.OriginationDiscount;
-                loan.OriginationDiscount2 = loan.Client.OriginationDiscount2;
-                loan.OriginationDiscountNumDays = loan.Client.OriginationDiscountNumDays;
-                loan.OriginationDiscountNumDays2 = loan.Client.OriginationDiscountNumDays2;
-                loan.InterestBasedOnAdvance = loan.Client.InterestBasedOnAdvance;
-                loan.OriginationBasedOnAdvance = loan.Client.OriginationBasedOnAdvance;
-                loan.NoInterest = loan.Client.NoInterest;
-
-                loan.InterestFee = 
-                loan.OriginationFee=
-                loan.UnderwritingFee = 
+                UpdateLoanFeeInfo(loan);
                 context.Loans.Add(loan);
 
                 if (loan.Client != null && loan.Client.ClientID > 0)
@@ -108,6 +94,27 @@ namespace RAIMVCV3
                 context.SaveChanges();
             }
         }
+        public void UpdateLoanFeeInfo(Loan loan)
+        {
+            using (ApplicationDbContext context = GetContext())
+            {
+                var client = context.Client.Where(x => x.ClientID == loan.ClientID).SingleOrDefault();
+                
+                //Copy client fields used for calcs in case they change after the loans close and we want to calc the same fee
+                loan.ClientPrimeRate = client.ClientPrimeRate;
+                loan.ClientPrimeRateSpread = client.ClientPrimeRateSpread;
+                loan.OriginationDiscount = client.OriginationDiscount;
+                loan.OriginationDiscount2 = client.OriginationDiscount2;
+                loan.OriginationDiscountNumDays = client.OriginationDiscountNumDays;
+                loan.OriginationDiscountNumDays2 = client.OriginationDiscountNumDays2;
+                loan.InterestBasedOnAdvance = client.InterestBasedOnAdvance;
+                loan.OriginationBasedOnAdvance = client.OriginationBasedOnAdvance;
+                loan.NoInterest = client.NoInterest;
+            }
+            loan.InterestFee = loan.InterestIncome;
+            loan.OriginationFee = loan.OriginationDiscountFee;
+            loan.UnderwritingFee = loan.UnderwritingFeeCalc;
+        }
         public void UpdateLoan(Loan loan)
         {
             using (ApplicationDbContext context = GetContext())
@@ -115,15 +122,14 @@ namespace RAIMVCV3
                 if (!loan.LoanUWIsComplete.Value)
                     loan.LoanStatusID = 1;
                 else if (loan.LoanUWIsComplete.Value &&
-                         (loan.InvestorProceedsDate == null && loan.InvestorProceedsDate < new DateTime(2000, 1, 1)) &&
-                         (loan.DateDepositedInEscrow == null && loan.DateDepositedInEscrow < new DateTime(2000, 1, 1)))
+                         (loan.InvestorProceedsDate == null) && loan.DateDepositedInEscrow == null)
                     loan.LoanStatusID = 2;
-                else if (loan.DateDepositedInEscrow != null && loan.DateDepositedInEscrow > new DateTime(2000, 1, 1) &&
-                    loan.InvestorProceedsDate == null && loan.InvestorProceedsDate < new DateTime(2000, 1, 1))
+                else if (loan.DateDepositedInEscrow != null && loan.InvestorProceedsDate == null)
                     loan.LoanStatusID = 3;
                 else
                     loan.LoanStatusID = 4;
 
+                UpdateLoanFeeInfo(loan);
                 context.Loans.Attach(loan);
 
                 var loanEntry = context.Entry(loan);

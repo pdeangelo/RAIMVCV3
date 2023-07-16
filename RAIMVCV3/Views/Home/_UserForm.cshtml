@@ -1,9 +1,12 @@
-﻿@model RAIMVCV3.Models.User
+﻿@*@model RAIMVCV3.Models.User
 @using RAIMVCV3
 
-@Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
 @using (Html.BeginForm())
 {
+    if (Request.HttpMethod != "GET")
+    {
+        @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" });
+    }
     <div class="row">
 
         <div class="col-md-6 col-lg-offset-3">
@@ -50,5 +53,5 @@
 
         </div>
     </div>
-}
+}*@
 

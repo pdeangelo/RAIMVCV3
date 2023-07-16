@@ -42,6 +42,12 @@ namespace RAIMVCV3.Controllers
         {
             var raiLoans = _loanRepository.GetLoans();
 
+            if (SearchText != "")
+                raiLoans = raiLoans.Where(loan => (loan.LoanMortgagee != null && loan.LoanMortgagee.ToLower().Contains(SearchText.ToLower()))
+                    || (loan.LoanMortgageeBusiness != null && loan.LoanMortgageeBusiness.ToLower().Contains(SearchText.ToLower()))
+                    || (loan.LoanNumber != null && loan.LoanNumber.ToLower().Contains(SearchText.ToLower()))
+                    || (loan.LoanPropertyAddress != null && loan.LoanPropertyAddress.ToLower().Contains(SearchText.ToLower()))).ToList();
+
             if (chkShowCompleted == "false")
                 raiLoans = raiLoans.Where(x => x.LoanStatus.LoanStatusName.Equals("1 - Underwriting")
                     || x.LoanStatus.LoanStatusName.Equals("2 - Funding")
@@ -55,12 +61,6 @@ namespace RAIMVCV3.Controllers
 
             if (ClientsSelectListItems != "")
                 raiLoans = raiLoans.Where(x => x.ClientID == Convert.ToInt32(ClientsSelectListItems)).ToList();
-
-            if (SearchText != "")
-                raiLoans = raiLoans.Where(loan => loan.LoanMortgagee.ToLower().Contains(SearchText.ToLower()) 
-                    || loan.LoanMortgageeBusiness.ToLower().Contains(SearchText.ToLower())
-                    || loan.LoanNumber.ToLower().Contains(SearchText.ToLower())
-                    || loan.LoanPropertyAddress.ToLower().Contains(SearchText.ToLower())).ToList();
 
             SetupSelectListItems();
             return View(raiLoans);

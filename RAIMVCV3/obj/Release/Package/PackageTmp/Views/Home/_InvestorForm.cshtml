@@ -3,36 +3,39 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" })
-<div class="row">
+    if (Request.HttpMethod != "GET")
+    {
+        @Html.ValidationSummary("The following errors were found:", new { @class = "alert alert-danger" });
+    }
+    <div class="row">
 
-    <div class="col-md-6 col-lg-offset-3">
+        <div class="col-md-6 col-lg-offset-3">
 
-        <div class="form-group">
-            @Html.HiddenFor(m => m.InvestorID)
-            @Html.HiddenFor(m => m.InvestorID)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.InvestorName, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.InvestorName, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.CustodianName, new { @class = "control-label" })
-            @Html.TextBoxFor(m => m.CustodianName, new { @class = "form-control" })
-        </div>
-        <div class="col-md-12">
-            <div class="pad-top">
-                <button type="submit" class="btn btn-success btn-lg margin-right">
-                    <span class="glyphicon glyphicon-save"></span> Save
-                </button>
-                <a href="@Url.Action("Investors")" class="btn btn-warning btn-lg">
-                    <span class="glyphicon glyphicon-remove"></span> Cancel
-                </a>
+            <div class="form-group">
+                @Html.HiddenFor(m => m.InvestorID)
+                @Html.HiddenFor(m => m.InvestorID)
             </div>
-        </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.InvestorName, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.InvestorName, new { @class = "form-control" })
+            </div>
 
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CustodianName, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.CustodianName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-12">
+                <div class="pad-top">
+                    <button type="submit" class="btn btn-success btn-lg margin-right">
+                        <span class="glyphicon glyphicon-save"></span> Save
+                    </button>
+                    <a href="@Url.Action("Investors")" class="btn btn-warning btn-lg">
+                        <span class="glyphicon glyphicon-remove"></span> Cancel
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
 }
 

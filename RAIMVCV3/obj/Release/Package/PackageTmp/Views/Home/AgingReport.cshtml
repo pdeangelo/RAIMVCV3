@@ -23,13 +23,13 @@
                 <div class="form-horizontal">
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="FDate">From Date</label>
+                            <label for="FDate">As Of Date</label>
                             <input type="date" ng-model="FDate" id="FDate" name="FDate" class="form-control" required />
                         </div>
-                        <div class="col-md-4">
+                        @*<div class="col-md-4">
                             <label for="lblTDate">To Date</label>
                             <input type="date" ng-model="TDate" id="TDate" name="TDate" class="form-control" required />
-                        </div>
+                        </div>*@
                     </div>
                     <hr />
                     <div class="form-group">
@@ -43,8 +43,7 @@
 <script type="text/javascript">
     function salesReport() {
         var fd = document.getElementById("FDate");
-        var td = document.getElementById("TDate");
-        $.post("/Home/RunAgingReport/", { dtFromDate: fd.value, dtToDate: td.value }, function (r) {
+        $.post("/Home/RunAgingReport/", { dtFromDate: fd.value}, function (r) {
 
         });
     }

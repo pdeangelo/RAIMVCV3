@@ -111,6 +111,7 @@ namespace RAIMVCV3
                 loan.OriginationBasedOnAdvance = client.OriginationBasedOnAdvance;
                 loan.NoInterest = client.NoInterest;
             }
+           
             loan.InterestFee = loan.InterestIncome;
             loan.OriginationFee = loan.OriginationDiscountFee;
             loan.UnderwritingFee = loan.UnderwritingFeeCalc;

@@ -241,7 +241,7 @@ namespace RAIMVCV3.Models
                 if (InvestorProceedsDate == null || DateDepositedInEscrow == null)
                     return 0;
                 else
-                    return (double)DateDepositedInEscrow.Value.Subtract(InvestorProceedsDate.Value).TotalDays;
+                    return (double)InvestorProceedsDate.Value.Subtract(DateDepositedInEscrow.Value).TotalDays;
             }
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -274,7 +274,7 @@ namespace RAIMVCV3.Models
             {
                 if (InvestorProceeds == null)
                     return 0;
-                if (InvestorProceeds == 0 && this.LoanStatus.LoanStatusName != "1 - Underwriting")
+                if (InvestorProceeds == 0 && LoanStatusID != 1)  //Underwriting
                     return LoanMortgageAmount;
                 else
                     return 0;
@@ -285,7 +285,7 @@ namespace RAIMVCV3.Models
         {
             get
             {
-                if (InvestorProceeds == 0 && this.LoanStatus.LoanStatusName != "1 - Underwriting")
+                if (InvestorProceeds == 0 && LoanStatusID != 1)//Underwriting
                     return LoanAdvanceAmount;
                 else
                     return 0;
@@ -355,11 +355,11 @@ namespace RAIMVCV3.Models
             get {
                 double minInterest = 0;
                 double UseMinRate = 0;
-                if (this.Client.MinimumInterest > 0)
-                    UseMinRate = this.Client.MinimumInterest;
+                if (MinimumInterest > 0)
+                    UseMinRate = MinimumInterest.Value;
 
-                else if (this.Client.ClientPrimeRateSpread > 0)
-                    UseMinRate = this.Client.ClientPrimeRateSpread + this.Client.ClientPrimeRate;
+                else if (ClientPrimeRateSpread > 0)
+                    UseMinRate = ClientPrimeRateSpread.Value + ClientPrimeRate.Value;
 
                 else
                     UseMinRate = LoanInterestRate.Value;
@@ -370,7 +370,7 @@ namespace RAIMVCV3.Models
                 else
                     MinimumInterest = UseMinRate;
 
-                return minInterest;
+                return MinimumInterest;
             }
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
@@ -378,7 +378,7 @@ namespace RAIMVCV3.Models
         {
             get
             {
-                return MinimumInterest / 360;
+                return LoanMinimumInterest / 360;
             }
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
